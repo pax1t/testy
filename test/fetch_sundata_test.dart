@@ -29,6 +29,17 @@ void main () {
       expect(await fetchSunData(client), isA<SunData>());
     });
 
+    test('throws exception on unknown service error', () {
+      final client = MockClient();
+      final String mockData = '{"results":"","status":"UNKNOWN_ERROR"}';
+
+      when(client.get('https://api.sunrise-sunset.org/json?'
+          'lat=36.7201600&lng=-4.4203400&formatted=0'))
+          .thenAnswer((_) async => http.Response(mockData, 200));
+
+      expect(fetchSunData(client), throwsException);
+    });
+
     test('throws exception on invalid API request', () {
       final client = MockClient();
       final String mockData = '{"results":"","status":"INVALID_REQUEST"}';

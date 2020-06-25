@@ -27,7 +27,7 @@ class SunData {
 Future<SunData> fetchSunData(http.Client client) async {
   final response =
       await client.get('https://api.sunrise-sunset.org/json?'
-                       'lat=36.7201600&lng=-4.4203400&formatted=0');
+          'lat=36.7201600&lng=-4.4203400&formatted=0');
 
   if (response.statusCode == 200) {
     Map<String, dynamic>jsonData = json.decode(response.body);
