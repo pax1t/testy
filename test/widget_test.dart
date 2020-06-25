@@ -27,4 +27,21 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
+
+  testWidgets('Test CounterTitle widget', (WidgetTester tester) async {
+    final key = Key('k');
+    final title = 'Counter';
+    final message = 'Start';
+
+    await tester.pumpWidget(CounterTitle(key: key, title: title, message: message));
+
+    // Finders
+    final keyFinder = find.byKey(key);
+    final titleFinder = find.text(title);
+    final messageFinder = find.text(message);
+
+    expect(keyFinder, findsOneWidget);
+    expect(titleFinder, findsOneWidget);
+    expect(messageFinder, findsOneWidget);
+  });
 }

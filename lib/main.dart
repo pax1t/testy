@@ -115,3 +115,29 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+class CounterTitle extends StatelessWidget {
+  final String title;
+  final String message;
+
+  const CounterTitle({
+    Key key,
+    @required this.title,
+    @required this.message,
+  }): super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Testing',
+      home: Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: Center(
+          child: Text(message),
+        ),
+      ),
+    );
+  }
+}
+
+
