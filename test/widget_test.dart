@@ -44,4 +44,31 @@ void main() {
     expect(titleFinder, findsOneWidget);
     expect(messageFinder, findsOneWidget);
   });
+
+  testWidgets('Test CounterTitle as child', (WidgetTester tester) async {
+    final childWidget = CounterTitle(title: 'Counter', message: 'Start');
+
+    await tester.pumpWidget(Center(child: childWidget));
+    expect(find.byWidget(childWidget), findsOneWidget);
+  });
+
+  testWidgets('Add and remove SpeedDial', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: SpeedDialList()));
+
+    await tester.enterText(find.byType(TextField), 'Query');
+
+    await tester.tap(find.byIcon(Icons.save));
+
+    await tester.pump();
+
+    final findSpeedDial = find.text('Query');
+
+    expect(findSpeedDial, findsOneWidget);
+    
+    await tester.drag(findSpeedDial, Offset(500.0, 0.0));
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Query'), findsNothing);
+  });
 }
