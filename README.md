@@ -1,3 +1,5 @@
+![Test](https://github.com/pax1t/testy/workflows/Test/badge.svg)
+
 # Testy
 
 Flutter Testing App.
