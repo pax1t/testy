@@ -1,0 +1,18 @@
+version: v1.0
+name: Dart
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+  containers:
+    - name: main
+      image: 'google/dart:latest'
+blocks:
+  - name: Test
+    task:
+      jobs:
+        - name: pub run test
+          commands:
+            - checkout
+            - pub get
+            - pub run test
