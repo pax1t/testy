@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:testy/models/models.dart';
 import 'dart:convert';
-import 'package:testy/sundata.dart';
 
 class SunDataApiClient {
   static const baseUrl = 'https://api.sunrise-sunset.org';

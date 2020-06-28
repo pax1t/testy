@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:testy/main.dart';
+import 'package:testy/pages/pages.dart';
+import 'package:testy/pages/speed_dial.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -70,5 +72,20 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Query'), findsNothing);
+  });
+
+  testWidgets('Test Navigation', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        routes: {
+          '/': (context) => HomePage(),
+          '/sun': (context) => SunPage(),
+        },
+        initialRoute: '/',
+      ),
+    );
+    await tester.tap(find.byIcon(Icons.wb_sunny));
+    await tester.pumpAndSettle();
+    expect(find.text('Sun'), findsOneWidget);
   });
 }

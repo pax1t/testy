@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:testy/sundata.dart';
+import 'package:testy/models/models.dart';
 
 void main() {
   group('SunData test', () {

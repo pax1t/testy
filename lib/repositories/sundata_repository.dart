@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
+import 'package:testy/models/models.dart';
 import 'package:testy/repositories/repositories.dart';
-import 'package:testy/sundata.dart';
 
 class SunDataRepository {
   final SunDataApiClient apiClient;
