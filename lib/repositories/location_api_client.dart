@@ -49,16 +49,4 @@ class LocationApiClient {
     }
   }
 
-  Future<LocationData> getLocation () async {
-    await location.requestPermission();
-    await permissionGranted();
-    LocationData locationData = await location.getLocation();
-    // print('${locationData.latitude} - ${locationData.longitude}');
-    if (locationData != null) {
-      return locationData;
-    } else {
-      throw Exception('Error getting location!');
-    }
-  }
-
 }
