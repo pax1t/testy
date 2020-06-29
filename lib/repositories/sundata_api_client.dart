@@ -11,12 +11,12 @@ class SunDataApiClient {
     @required this.httpClient,
   }) : assert (httpClient != null);
 
+  Future<SunData> byCoordinates(double latitude, double longitude) async {
 
-  Future<SunData> fetchSunData() async {
-    /// TODO: pass device location data to this function
+    final String url = 'https://api.sunrise-sunset.org/json?'
+        'lat=$latitude&lng=$longitude&formatted=0';
     final response =
-    await httpClient.get('https://api.sunrise-sunset.org/json?'
-        'lat=36.7201600&lng=-4.4203400&formatted=0');
+    await httpClient.get(url);
 
     if (response.statusCode == 200) {
       Map<String, dynamic>jsonData = json.decode(response.body);

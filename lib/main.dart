@@ -1,18 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:testy/pages/pages.dart';
+import 'package:testy/repositories/repositories.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final SunDataRepository sunRepo = SunDataRepository(
+      apiClient: SunDataApiClient(httpClient: http.Client()),
+  );
+  final LocationRepository locationRepo = LocationRepository(
+    locationApiClient: LocationApiClient(location: Location()),
+  );
+
+  runApp(App(
+    sunDataRepository: sunRepo,
+    locationRepository: locationRepo,
+  ));
+}
+
+void counterApp() {
   runApp(MyApp());
 }
 
 class App extends StatelessWidget {
+  final SunDataRepository sunDataRepository;
+  final LocationRepository locationRepository;
+
+  App({
+    Key key,
+    @required this.sunDataRepository,
+    @required this.locationRepository,
+  }) : assert(
+    sunDataRepository != null
+    && locationRepository != null
+  ),
+    super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Testy App',
       routes: {
         '/': (context) => HomePage(),
-        '/sun': (context) => SunPage(),
+        '/sun': (context) => SunPage(
+          sunRepo: sunDataRepository,
+          locationRepo: locationRepository,
+        ),
       },
     );
   }

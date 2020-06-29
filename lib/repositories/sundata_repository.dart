@@ -9,7 +9,7 @@ class SunDataRepository {
     @required this.apiClient,
   }) : assert(apiClient != null);
 
-  Future<SunData> getSunset() async {
-    return apiClient.fetchSunData();
+  Future<SunData> byLocation(double latitude, double longitude) async {
+    return apiClient.byCoordinates(latitude, longitude);
   }
 }

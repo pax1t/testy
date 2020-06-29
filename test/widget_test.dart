@@ -7,10 +7,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:location/location.dart';
+import 'package:mockito/mockito.dart';
 
 import 'package:testy/main.dart';
+import 'package:testy/models/models.dart';
 import 'package:testy/pages/pages.dart';
 import 'package:testy/pages/speed_dial.dart';
+
+import 'package:testy/repositories/repositories.dart';
+
+class MockSunRepository extends Mock implements SunDataRepository {}
+class MockLocationRepository extends Mock implements LocationRepository {}
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -74,18 +82,64 @@ void main() {
     expect(find.text('Query'), findsNothing);
   });
 
-  testWidgets('Test Navigation', (WidgetTester tester) async {
+  testWidgets('Tapping Sunny button on HomePage opens SunPage', (WidgetTester tester) async {
+    final sunRepo = MockSunRepository();
+    final locationRepo = MockLocationRepository();
     await tester.pumpWidget(
       MaterialApp(
         routes: {
           '/': (context) => HomePage(),
-          '/sun': (context) => SunPage(),
+          '/sun': (context) => SunPage(
+            sunRepo: sunRepo,
+            locationRepo: locationRepo,
+          ),
         },
         initialRoute: '/',
       ),
     );
+
+    // inject SunData and LocationData for FutureBuilder
+    when(locationRepo.getLocation())
+        .thenAnswer((_) async =>
+        LocationData.fromMap({
+          'latitude': 50.0,
+          'longitude': 50.0,
+        }));
+    when(sunRepo.byLocation(50.0, 50.0)).thenAnswer((_) async => SunData(
+      dayLength: 10,
+      sunrise: DateTime.now(),
+      sunset: DateTime.now(),
+    ));
+
     await tester.tap(find.byIcon(Icons.wb_sunny));
     await tester.pumpAndSettle();
     expect(find.text('Sun'), findsOneWidget);
   });
+
+  testWidgets('Going to SunPage the data is displayed', (WidgetTester tester) async {
+    final sunRepo = MockSunRepository();
+    final locationRepo = MockLocationRepository();
+    // Mocking Sun data
+    final mockSunData = SunData(
+      sunrise: DateTime.now(),
+      sunset: DateTime.now().add(Duration(hours: 6)),
+      dayLength: Duration(hours: 6).inSeconds,
+    );
+    when(locationRepo.getLocation()).thenAnswer((_) async => LocationData.fromMap({
+      'latitude': 50.0,
+      'longitude': 50.0,
+    }));
+    when(sunRepo.byLocation(50.0, 50.0)).thenAnswer((_) async => mockSunData);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: SunPage(
+          sunRepo: sunRepo,
+          locationRepo: locationRepo,
+        ),
+      ),
+    );
+    expect(find.text('Sun'), findsOneWidget);
+  });
+
 }

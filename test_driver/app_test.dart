@@ -1,13 +1,11 @@
-
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Counter App', () {
-    final counterTextFinder = find.byValueKey('counter');
-    final buttonFinder = find.byValueKey('increment');
 
+  group('Sun App', () {
     FlutterDriver driver;
+    final homeFinder = find.text('Home');
 
     setUpAll(() async {
       driver = await FlutterDriver.connect();
@@ -19,14 +17,18 @@ void main() {
       }
     });
 
-    test('Starts at 0', () async {
-      expect(await driver.getText(counterTextFinder), '0');
+    test('Starts at Home', () async {
+      expect(await driver.getText(homeFinder), 'Home');
     });
 
-    test('Increment the counter', () async {
-      await driver.tap(buttonFinder);
-      
-      expect(await driver.getText(counterTextFinder), '1');
+    test('Going to Sun', () async {
+      await driver.waitFor(find.byType('RaisedButton'));
+      driver.tap(find.byType('RaisedButton'));
+      await driver.waitFor(find.text('Sun'));
+      await driver.waitFor(find.text('Sunset'));
+      /// TODO: Add checking for real sunset data
+      expect(await driver.getText(find.text('Sunset')), 'Sunset');
     });
+
   });
 }
